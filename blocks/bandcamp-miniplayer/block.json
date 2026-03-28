@@ -1,0 +1,46 @@
+{
+	"apiVersion": 3,
+	"name": "blocks-for-bandcamp/bandcamp-miniplayer",
+	"title": "Bandcamp Miniplayer",
+	"description": "Embed a Bandcamp track mini player via URL",
+	"keywords": ["bandcamp","embed","mini","audio","player"],
+	"category": "blocks-for-bandcamp",
+	"icon": {
+		"background": "#1da0c3", 
+		"foreground": "#ffffff",
+		"src": "album"
+	},
+	"supports": {
+		"html": false,
+		"anchor": true,
+		"align": ["wide","full"],
+		"spacing": {
+			"margin": true,
+			"padding": true
+		}
+	},
+    "attributes": {
+		"previewMode": { "type": "boolean", "default": true },
+		"url": { "type": "string", "default": "" },
+		"albumID": { "type": "string", "default": "" },
+		"blockID": { "type": "string", "default": "" },
+		"artOpacity": { "type": "number", "default": 0.5 },
+		"artOpacityHover": { "type": "number", "default": 0.2 },
+		"aspectRatioHeight": { "type": "string", "default": "1" },
+		"aspectRatioWidth": { "type": "string", "default": "1" },
+		"backgroundColor": { "type": "string", "default": "#171717" },
+		"buttonColor": { "type": "string", "default": "#000000" },
+		"progressBarColor": { "type": "string", "default": "#ffffff" },
+		"textColor": { "type": "string", "default": "#ffffff" },
+		"trackNumber": { "type": "string", "default": "1" },
+		"display_album_artist": { "type": "boolean", "default": true },
+		"display_album_link": { "type": "boolean", "default": true },
+		"display_album_title": { "type": "boolean", "default": true },
+		"display_progress_bar": { "type": "boolean", "default": true },
+		"display_track_title": { "type": "boolean", "default": true }
+     },
+	"editorScript": "file:./index.js",
+	"style": "file:./frontend.css",
+	"viewScript": "file:./frontend.js",
+	"render": "file:./render.php"
+}

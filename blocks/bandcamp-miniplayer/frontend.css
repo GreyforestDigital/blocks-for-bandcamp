@@ -1,0 +1,37 @@
+/* BLOCK */
+.bandcamp-block-message {color:#000;height:auto;padding:2rem 1rem;width:auto;border:1px solid #ccc;display:flex;align-items:center;justify-content:center;}
+.bandcamp-block-message svg {height:2em;width:auto;margin-right:1em;}
+.bandcamp-block-message svg path {fill: #000;}
+.bandcamp-block-message.bandcamp-block-error {border-color:red;color:red;}
+.bandcamp-block-message.bandcamp-block-error svg path {fill:red;}
+
+.bandcamp-miniplayer {position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;aspect-ratio:7/3;}
+.bandcamp-miniplayer-play {cursor:pointer;position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;display:flex;align-items:center;justify-content:center;opacity:1;}
+.bandcamp-miniplayer-play svg {cursor:pointer;height:20%;max-height:250px;min-height:50px;width:auto;}
+.bandcamp-miniplayer-play svg path {fill:#fff;}
+.bandcamp-miniplayer-play svg:hover {opacity:0.7;}
+.bandcamp-miniplayer-art {transition:1s ease;opacity:0.5;position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;background-size:cover;background-position:center;}
+.bandcamp-miniplayer:hover .bandcamp-miniplayer-art {opacity:0.2;transition:1s ease;}
+.bandcamp-miniplayer-text {position:absolute;bottom:0;left:0;padding:5%;width:auto;z-index:3;box-sizing:border-box;font-size:clamp(12px, 1.3vw, 1.3rem);}
+.bandcamp-miniplayer-albumlink {position:absolute;opacity:0;transition:1s ease;bottom:0;right:0;padding:5%;width:auto;z-index:3;box-sizing:border-box;}
+.bandcamp-miniplayer-albumlink a.album-link {background:#fff;color:#000 !important;display:inline-block;width:auto;align-items:center;text-decoration:none;font-size:.7em;padding:5px 8px;border-radius:2px;margin:0;}
+.bandcamp-miniplayer-albumlink a.album-link div {display:flex;align-items:center;}
+.bandcamp-miniplayer-albumlink a.album-link svg {height:1.2em;width:auto;margin:0 .1em 0 .4em;display:inline-block;}
+.bandcamp-miniplayer-albumlink a.album-link svg path {fill:#000 !important;}
+.bandcamp-miniplayer h3,
+.bandcamp-miniplayer h4,
+.bandcamp-miniplayer p {color:#fff;margin:0;opacity:0;transform:translateY(1em);transition:1s ease;}
+.bandcamp-miniplayer h3 {font-size:1.4em;}	
+.bandcamp-miniplayer h4 {font-size:1.15em;}	
+.bandcamp-miniplayer P {font-size:1em;}
+.bandcamp-miniplayer:hover .bandcamp-miniplayer-text *:nth-child(1) {opacity:1;transform:translateY(0);transition:.5s 0s ease;}
+.bandcamp-miniplayer:hover .bandcamp-miniplayer-text *:nth-child(2) {opacity:1;transform:translateY(0);transition:.5s .15s ease;}
+.bandcamp-miniplayer:hover .bandcamp-miniplayer-text *:nth-child(3) {opacity:1;transform:translateY(0);transition:.5s .25s ease;}
+.bandcamp-miniplayer:hover .bandcamp-miniplayer-albumlink {opacity:1;transition:.5s 0s ease;}
+.bandcamp-miniplayer-progress {z-index:4; position: absolute; bottom: 0; left: 0; height: 4px; background: #000;width: 0%; transition: width 0.1s linear; }
+
+@media only screen and (max-width : 768px) {
+.bandcamp-miniplayer {overflow:auto;height:auto;}
+.bandcamp-miniplayer-text {position:relative;display:block;align-self:flex-end;flex-flow:wrap row;transition:1s ease;bottom:0;right:0;padding:1rem;width:100%;z-index:3;box-sizing:border-box;}
+.bandcamp-miniplayer-albumlink {position:relative;display:flex;align-self:flex-end;justify-content:flex-end;opacity:1;transition:1s ease;bottom:0;right:0;padding:1rem;width:100%;z-index:3;box-sizing:border-box;}
+}

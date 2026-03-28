@@ -1,0 +1,50 @@
+{
+	"apiVersion": 3,
+	"name": "blocks-for-bandcamp/bandcamp-merch",
+	"title": "Bandcamp Merch",
+	"description": "Embed Bandcamp merch items via URL",
+	"keywords": ["bandcamp","merch","audio","player"],
+	"category": "blocks-for-bandcamp",
+	"icon": {
+		"background": "#1da0c3", 
+		"foreground": "#ffffff",
+		"src": "album"
+	},
+	"supports": {
+		"html": false,
+		"anchor": true,
+		"align": ["wide","full"],
+		"spacing": {
+			"margin": true,
+			"padding": true
+		}
+	},
+    "attributes": {
+		"previewMode": { "type": "boolean", "default": true },
+		"url": { "type": "string", "default": "" },
+		"albumID": { "type": "string", "default": "" },
+		"blockID": { "type": "string", "default": "" },
+		"single_or_all": { "type": "string", "default": "single" },
+		"layout_style": { "type": "string", "default": "cards" },
+		"layout_columns": { "type": "number", "default": 3 },
+		"photo_version": { "type": "string", "default": "cropped" },
+		"display_album_art": { "type": "boolean", "default": true },
+		"display_album_artist": { "type": "boolean", "default": true },
+		"display_album_title": { "type": "boolean", "default": true },
+		"display_description": { "type": "boolean", "default": true },
+		"display_edition_size": { "type": "boolean", "default": true },
+		"display_media_type": { "type": "boolean", "default": true },
+		"display_photos": { "type": "boolean", "default": true },
+		"display_price": { "type": "boolean", "default": true },
+		"display_purchase_button": { "type": "boolean", "default": true },
+		"display_quantity_available": { "type": "boolean", "default": true },
+		"display_sold_out_items": { "type": "boolean", "default": true },
+		"style_purchase_button_bgcolor": { "type": "string", "default": "#111111" },
+		"style_purchase_button_textcolor": { "type": "string", "default": "#ffffff" }
+     },
+	"editorScript": "file:./index.js",
+	"style": "file:./frontend.css",
+	"viewScript": "file:./frontend.js",
+	"render": "file:./render.php"
+}
+

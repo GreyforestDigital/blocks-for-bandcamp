@@ -1,0 +1,54 @@
+{
+	"apiVersion": 3,
+	"name": "blocks-for-bandcamp/bandcamp-album",
+	"title": "Bandcamp Album",
+	"description": "Embed a Bandcamp featured album section via URL",
+	"keywords": ["bandcamp","embed","featured","album","player"],
+	"category": "blocks-for-bandcamp",
+	"icon": {
+		"background": "#1da0c3", 
+		"foreground": "#ffffff",
+		"src": "album"
+	},
+	"supports": {
+		"html": false,
+		"anchor": true,
+		"align": ["wide","full"],
+		"spacing": {
+			"margin": true,
+			"padding": true
+		}
+	},
+    "attributes": {
+		"previewMode": { "type": "boolean", "default": true },
+		"url": { "type": "string", "default": "" },
+		"albumID": { "type": "string", "default": "" },
+		"blockID": { "type": "string", "default": "" },
+		"backgroundColor": { "type": "string", "default": "#171717" },
+		"textColor": { "type": "string", "default": "#ffffff" },
+		"buttonColor": { "type": "string", "default": "#000000" },
+		"trackColor": { "type": "string", "default": "#ffffff" },
+		"embedType": { "type": "string", "default": "custom" },
+		"display_album_art": { "type": "boolean", "default": true },
+		"display_album_artist": { "type": "boolean", "default": true },
+		"display_album_link": { "type": "boolean", "default": true },
+		"display_album_title": { "type": "boolean", "default": true },
+		"display_audio": { "type": "boolean", "default": true },
+		"display_merch": { "type": "boolean", "default": true },
+		"display_playlist": { "type": "boolean", "default": true }
+     },
+	"editorScript": "file:./index.js",
+	"style": "file:./frontend.css",
+	"viewScript": "file:./frontend.js",
+	"render": "file:./render.php",
+	"dependencies": [
+		"wp-blocks",
+		"wp-element",
+		"wp-components",
+		"wp-block-editor",
+		"wp-data",
+		"wp-api-fetch",
+		"wp-server-side-render",
+		"wp-i18n"
+    ]
+}

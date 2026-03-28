@@ -1,0 +1,21 @@
+.bandcamp-block-message {color:#000;height:auto;padding:2rem 1rem;width:auto;border:1px solid #ccc;display:flex;align-items:center;justify-content:center;}
+.bandcamp-block-message svg {height:2em;width:auto;margin-right:1em;}
+.bandcamp-block-message svg path {fill: #000;}
+.bandcamp-block-message.bandcamp-block-error {border-color:red;color:red;}
+.bandcamp-block-message.bandcamp-block-error svg path {fill:red;}
+
+.bandcamp-label {display:block;font-size:11px;line-height:1.4;margin:0 0 8px 0;text-transform:uppercase;}
+
+#bc-lightbox-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 999999; }
+#bc-lightbox-content { position: relative; width: auto; height: calc(100% - 10svh);margin: 5svh 5vw; }
+#bc-lightbox-image { max-width: 100%; max-height: 100%; width: 100%; height: 100%; display: block; object-fit: contain; margin: auto; }
+#bc-lightbox-close { position: absolute; top: 0px; right: 0px; color: white; background:none; border:0px solid #fff; font-size: 32px; cursor: pointer; }
+#bc-lightbox-prev,
+#bc-lightbox-next { position: absolute; top: 50%; transform: translateY(-50%); background: none; border: none; color: white; font-size: 48px; cursor: pointer; padding: 0 12px; }
+#bc-lightbox-prev { left: 50px; }
+#bc-lightbox-next { right: 50px; }
+
+@media only screen and (max-width : 768px) {
+#bc-lightbox-prev,
+#bc-lightbox-next { top: 90%; transform: translateY(00%); }
+}

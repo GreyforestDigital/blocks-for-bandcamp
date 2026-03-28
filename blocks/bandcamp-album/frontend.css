@@ -1,0 +1,53 @@
+/* BLOCK */
+.bandcamp-block-message {color:#000;height:auto;padding:2rem 1rem;width:100%;border:1px solid #ccc;display:flex;align-items:center;justify-content:center;}
+.bandcamp-block-message svg {height:2em;width:auto;margin-right:1em;}
+.bandcamp-block-message svg path {fill: #000;}
+.bandcamp-block-message.bandcamp-block-error {border-color:red;color:red;}
+.bandcamp-block-message.bandcamp-block-error svg path {fill:red;}
+
+.bandcamp-album {position:relative;background-color:#171717;margin:0px auto;color:#fff;}
+.bandcamp-album * {position:relative;padding:0;margin:0;}
+.bandcamp-album iframe {margin:0px;width:100%;}
+
+.bandcamp-album a.album-link {background:#fff;color:#000 !important;display:inline-block;width:auto;align-items:center;text-decoration:none;font-size:.8em;padding:5px 8px;border-radius:2px;margin:.5rem 0;}
+.bandcamp-album a.album-link div {display:flex;align-items:center;}
+.bandcamp-album a.album-link path {fill:#000;}
+.bandcamp-album a.album-link svg {height:1.2em;width:auto;margin:0 .1em 0 .4em;display:inline-block;}
+
+.bandcamp-album .bandcamp-album-header-wrap {position:relative;z-index:1;padding:1rem;grid-gap:2rem;display:grid;grid-template-columns:repeat( auto-fill, minmax(200px, 1fr) )}
+
+.bandcamp-album .bandcamp-album-artwork img {width:100%;max-width:300px;height:auto;}
+.bandcamp-album .bandcamp-album-audio {position:relative;z-index:1;width:100%;}
+.bandcamp-album .bandcamp-album-audio audio {width:100%;display:block;position:relative;margin:0;}
+.bandcamp-album .bandcamp-album-background {filter:grayscale(1);opacity:0.1;position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;background-size:cover;background-position:center;}
+
+.bandcamp-album .bandcamp-album-merch {margin:0;display:block;border-top:1px solid rgba(0,0,0,0.1);padding:1rem;}
+.bandcamp-album .bandcamp-album-merch li {list-style:none;}
+.bandcamp-album .bandcamp-album-merch li .bandcamp-album-merch-photos a {display:inline-block;}
+.bandcamp-album .bandcamp-album-merch li .bandcamp-album-merch-photos a img {width:80px;margin:10px;}
+.bandcamp-album .bandcamp-album-merch li .bandcamp-album-merch-photos {}
+.bandcamp-album .bandcamp-album-merch li .bandcamp-album-merch-info {padding:10px;}
+.bandcamp-album .bandcamp-album-merch li .bandcamp-album-merch-info small,
+.bandcamp-album .bandcamp-album-merch li .bandcamp-album-merch-info span {display:block;padding:5px 0;}
+.bandcamp-album .bandcamp-album-merch li .bandcamp-album-merch-info small i {line-height:1.4;}
+
+.bandcamp-album .bandcamp-album-titles {display:flex;align-items:center;flex-flow:wrap row;}
+.bandcamp-album .bandcamp-album-titles h3 {text-align:left;margin:0;padding:5px 0;}
+.bandcamp-album .bandcamp-album-titles h4 {text-align:left;margin:0;padding:5px 0;}
+.bandcamp-album .bandcamp-album-titles iframe {margin:1rem 0;display:block;border: 0; width: 100%; height: 42px;}
+.bandcamp-album .bandcamp-album-titles p {text-align:left;margin:0;padding:.5rem 0;}
+
+.bandcamp-album .bandcamp-album-tracks ul {list-style:none;padding:0;margin:0;}
+.bandcamp-album .bandcamp-album-tracks ul li {display:grid;grid-template-columns:3em 1fr auto;align-items:center;border-bottom:1px solid rgba(0,0,0,0.4);}
+.bandcamp-album .bandcamp-album-tracks ul li span.track-link {font-size:.7em;cursor:pointer;-text-align:left;text-decoration:none;display:block;padding:.5rem 0 .6rem 0;transition:.25s ease;}
+.bandcamp-album .bandcamp-album-tracks ul li span.track-link:hover {transform:translateX(.5rem) translateY(0);transition:.35s ease-out;}
+.bandcamp-album .bandcamp-album-tracks ul li span.track-duration {font-size:.7em;padding:0 1rem;}
+.bandcamp-album .bandcamp-album-tracks ul li span.track-number {font-size:.7em;text-align:center;display:block;width:2.3em;height:2.3em;line-height:2.3em;position:relative;top:0px;border-radius:100%;text-align:center;background:rgba(0,0,0,0.5);color:#fff;margin:0 auto;}
+.bandcamp-album .bandcamp-album-tracks ul li.active span.track-number {background:rgba(0,0,0,0.2);}
+.bandcamp-album .bandcamp-album-tracks ul li.active span.track-link {font-weight:bold;}
+
+
+@media only screen and (max-width : 568px) {
+.bandcamp-album .bandcamp-album-header-wrap {grid-template-columns:1fr;}
+.bandcamp-album .bandcamp-album-artwork img {max-width:100%;}
+}

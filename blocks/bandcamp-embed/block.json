@@ -1,0 +1,29 @@
+{
+	"apiVersion": 3,
+	"name": "blocks-for-bandcamp/bandcamp-embed",
+	"title": "Bandcamp Embed",
+	"description": "Embed a Bandcamp player via shortcode, iframe, or URL",
+	"keywords": ["bandcamp","embed","audio","player"],
+	"category": "blocks-for-bandcamp",
+	"icon": {
+		"background": "#1da0c3", 
+		"foreground": "#ffffff",
+		"src": "album"
+	},
+	"supports": {
+		"html": false,
+		"anchor": true,
+		"align": ["wide","full"],
+		"spacing": true
+	},
+    "attributes": {
+		"previewMode": { "type": "boolean", "default": true },
+		"textAlign": { "type": "string", "default": "center" },
+		"embedType": { "type": "string", "default": "shortcode" },
+		"code": { "type": "string", "default": "" }
+     },
+	"editorScript": "file:./index.js",
+	"viewScript": "file:./frontend.js",
+	"style": "file:./frontend.css",
+	"render": "file:./render.php"
+}

@@ -1,0 +1,23 @@
+/* BLOCK */
+.bandcamp-block-message {color:#000;height:auto;padding:2rem 1rem;width:auto;border:1px solid #ccc;display:flex;align-items:center;justify-content:center;}
+.bandcamp-block-message svg {height:2em;width:auto;margin-right:1em;}
+.bandcamp-block-message svg path {fill: #000;}
+.bandcamp-block-message.bandcamp-block-error {border-color:red;color:red;}
+.bandcamp-block-message.bandcamp-block-error svg path {fill:red;}
+
+.bandcamp-form form {display:flex;gap:10px;}
+.bandcamp-form-layout-stacked form {flex-flow:column wrap;}
+.bandcamp-form-layout-sidebyside form {display:grid;grid-template-columns:auto auto;}
+.bandcamp-form-layout-sidebyside form input,
+.bandcamp-form-layout-sidebyside form button {flex:1;}
+
+.bandcamp-form button.textalign-center {text-align:center;}
+.bandcamp-form button.textalign-left {text-align:left;}
+.bandcamp-form button.textalign-right {text-align:right;}
+.bandcamp-form input.textalign-center {text-align:center;}
+.bandcamp-form input.textalign-left {text-align:left;}
+.bandcamp-form input.textalign-right {text-align:right;}
+
+@media only screen and (max-width : 568px) {
+.bandcamp-form-layout-sidebyside form {grid-template-columns:1fr;}
+}

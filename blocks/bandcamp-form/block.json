@@ -1,0 +1,56 @@
+{
+	"apiVersion": 3,
+	"name": "blocks-for-bandcamp/bandcamp-form",
+	"title": "Bandcamp Form",
+	"description": "Embed Bandcamp form for customers to redeem download codes",
+	"keywords": ["bandcamp","download","form","codes"],
+	"category": "blocks-for-bandcamp",
+	"icon": {
+		"background": "#1da0c3", 
+		"foreground": "#ffffff",
+		"src": "album"
+	},
+	"supports": {
+		"html": false,
+		"anchor": true,
+		"align": ["wide","full"],
+		"spacing": {
+			"margin": true,
+			"padding": true
+		}
+	},
+	"attributes": {
+		"anchor": 					{ "type": "string", "default": "" },
+        "blockID": 					{ "type": "string", "default": "" },
+		"previewMode": 				{ "type": "boolean", "default": true },
+		"button_text": 				{ "type": "string",  "default": "Redeem Download" },
+		"input_placeholder_text": 	{ "type": "string",  "default": "XXXX-XXXX" },
+		"layout_style": 			{ "type": "string",  "default": "stacked" },
+		"inputPadding":         	{ "type": "object",  "default": { "top":"1em", "right":"1em", "bottom":"1em", "left":"1em" } },
+		"inputBackgroundColor": 	{ "type": "string",  "default": "" },
+		"inputBorder":          	{ "type": "object",  "default": { "color":"", "style":"", "width":"", "radius":"" } },
+		"inputTextAlign": 			{ "type": "string",  "default": "center" },
+		"inputTextColor":       	{ "type": "string",  "default": "" },
+		"inputHoverColor":      	{ "type": "string",  "default": "" },
+		"inputFontSize":        	{ "type": "number",  "default": 1 },
+		"inputFontUnit":        	{ "type": "string",  "default": "em" },
+		"inputFontFamily":      	{ "type": "string",  "default": "" },
+		"inputFontStyle":       	{ "type": "string",  "default": "normal" },
+		"inputLineHeight":      	{ "type": "number",  "default": 1 },
+		"buttonPadding":        	{ "type": "object",  "default": { "top":"1em", "right":"1em", "bottom":"1em", "left":"1em" } },
+		"buttonBackgroundColor":	{ "type": "string",  "default": "#1da0c3" },
+		"buttonBorder":         	{ "type": "object",  "default": { "color":"", "style":"", "width":"", "radius":"" } },
+		"buttonTextColor":      	{ "type": "string",  "default": "#ffffff" },
+		"buttonTextAlign": 			{ "type": "string",  "default": "center" },
+		"buttonHoverColor":     	{ "type": "string",  "default": "" },
+		"buttonFontSize":       	{ "type": "number",  "default": 1 },
+		"buttonFontUnit":       	{ "type": "string",  "default": "em" },
+		"buttonFontFamily":     	{ "type": "string",  "default": "" },
+		"buttonFontStyle":      	{ "type": "string",  "default": "normal" },
+		"buttonLineHeight":     	{ "type": "number",  "default": 1 }
+	},
+	"editorScript": "file:./index.js",
+	"style": "file:./frontend.css",
+	"render": "file:./render.php"
+}
+
