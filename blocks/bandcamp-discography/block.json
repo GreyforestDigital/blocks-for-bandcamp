@@ -1,0 +1,56 @@
+{
+	"apiVersion": 3,
+	"name": "blocks-for-bandcamp/bandcamp-discography",
+	"title": "Bandcamp Discography",
+	"description": "Embed an entire Bandcamp discography via URL",
+	"keywords": ["bandcamp","embed","releases","albums","discography"],
+	"category": "blocks-for-bandcamp",
+	"icon": {
+		"background": "#1da0c3", 
+		"foreground": "#ffffff",
+		"src": "album"
+	},
+	"supports": {
+		"html": false,
+		"anchor": true,
+		"align": ["wide","full"],
+		"spacing": {
+			"margin": true,
+			"padding": true
+		}
+	},
+    "attributes": {
+		"previewMode": { "type": "boolean", "default": true },
+		"artist_url": { "type": "string", "default": "" },
+		"blockID": { "type": "string", "default": "" },
+		"text_color": { "type": "string", "default": "#000000" },
+		"button_color": { "type": "string", "default": "#000000" },
+		"button_text_color": { "type": "string", "default": "#ffffff" },
+		"release_border": { "type": "object", "default": { "color":"", "style":"", "width":"", "radius":"" } },
+		"release_image_padding": { "type": "object", "default": {} },
+		"release_titles_padding": { "type": "object", "default": {} },
+		"release_titles_align": { "type": "string", "default": "left" },
+		"display_album_art": { "type": "boolean", "default": true },
+		"display_album_artist": { "type": "boolean", "default": true },
+		"display_album_link": { "type": "boolean", "default": true },
+		"display_album_title": { "type": "boolean", "default": true },
+		"display_album_border": { "type": "boolean", "default": true },
+		"layout_grid_gap": { "type": "string", "default": "2rem" },
+		"layout_columns": { "type": "number", "default": 3 },
+		"layout_columns_mobile": { "type": "number", "default": 2 }
+     },
+	"editorScript": "file:./index.js",
+	"style": "file:./frontend.css",
+	"viewScript": "file:./frontend.js",
+	"render": "file:./render.php",
+	"dependencies": [
+		"wp-blocks",
+		"wp-element",
+		"wp-components",
+		"wp-block-editor",
+		"wp-data",
+		"wp-api-fetch",
+		"wp-server-side-render",
+		"wp-i18n"
+    ]
+}

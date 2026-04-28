@@ -25,8 +25,11 @@ var TextareaControl = wp.components.TextareaControl;
 var TextControl = wp.components.TextControl;
 var ToggleControl = wp.components.ToggleControl;
 var Toolbar = wp.components.Toolbar;
+var UnitControl = wp.components.__experimentalUnitControl || wp.components.UnitControl;
 var useBlockProps = wp.blockEditor.useBlockProps;
 var useSelect = wp.data.useSelect;
+var Spinner = wp.components.Spinner;
+var Notice = wp.components.Notice;
 
 var customIcon__bandcamp_form = createElement(
 	'svg',

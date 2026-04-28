@@ -25,8 +25,11 @@ var TextareaControl = wp.components.TextareaControl;
 var TextControl = wp.components.TextControl;
 var ToggleControl = wp.components.ToggleControl;
 var Toolbar = wp.components.Toolbar;
+var UnitControl = wp.components.__experimentalUnitControl || wp.components.UnitControl;
 var useBlockProps = wp.blockEditor.useBlockProps;
 var useSelect = wp.data.useSelect;
+var Spinner = wp.components.Spinner;
+var Notice = wp.components.Notice;
 
 var customIcon__bandcamp_embed = createElement(
 	'svg',
@@ -102,7 +105,9 @@ registerBlockType('blocks-for-bandcamp/bandcamp-merch', {
 					readOnly: isReadonly,
 					onChange: function (value) {
 						return setAttributes({ url: value });
-					}
+					},
+					style: {wordBreak:'break-all'},
+					rows:3
 				}),
 				createElement('small',{},
 					'Enter album URL, then click "Fetch Album ID" to sync the album ID',
@@ -127,10 +132,11 @@ registerBlockType('blocks-for-bandcamp/bandcamp-merch', {
 				createElement(TextControl, {
 					label: "Album ID",
 					value: attributes.albumID,
-					readOnly: isReadonly,
+					readOnly: true,
 					onChange: function (value) {
 						return setAttributes({ albumID: value });
-					}
+					},
+					style: {opacity:'0.5'}
 				}),
 				createElement(SelectControl, {
 					label: 'Single Album or All Products?',
@@ -155,7 +161,7 @@ registerBlockType('blocks-for-bandcamp/bandcamp-merch', {
 							key: val
 						},val);
 					})
-				),
+				),					
 				createElement('label', {className:'bandcamp-label'},'Photo Version'),
 				createElement(ButtonGroup, {style:{marginBottom:'16px'}},
 					photoVersion.map( function( option ) {

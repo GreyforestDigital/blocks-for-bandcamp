@@ -17,42 +17,41 @@ $wrapper_attributes = get_block_wrapper_attributes([
 ]);
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+$bandcamp = new BlocksForBandcamp_API();
+
 if (!$code) :
 	
-	echo '
-	<div class="bandcamp-block-message">
-		<svg version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24" xml:space="preserve">
-			<path d="M10.1,8.9l-3.3,6h7l3.3-6H10.1z M21.6,11.9c0-5.3-4.3-9.6-9.6-9.6s-9.6,4.3-9.6,9.6s4.3,9.6,9.6,9.6 	S21.6,17.2,21.6,11.9z M12,20.9c-5,0-9-4-9-9s4-9,9-9s9,4,9,9S17,20.9,12,20.9z"/>
-		</svg>
-		<span>'. esc_html__('EMBED CODE REQUIRED','blocks-for-bandcamp') .'</span>
-	</div>';
+	echo wp_kses($bandcamp->render_error_html([
+		'error'=>true,
+		'message'=>__('EMBED CODE REQUIRED','blocks-for-bandcamp')
+	]), 'post');
 	return;
 
 endif;
 
-$allowed_tags = array(
-	'iframe' => array(
-		'src'             => true,
-		'width'           => true,
-		'height'          => true,
-		'frameborder'     => true,
-		'allow'           => true,
-		'allowfullscreen' => true,
-		'loading'         => true,
-		'class'           => true,
-		'id'              => true,
-		'style'           => true,
-		'seamless'        => true,
-	)
-);
-
 if ($embedType == 'url') :
 
-	$bandcamp_data_page = gf_blocks_for_bandcamp__get_meta_tag_content($code, 'bc-page-properties');
-	$bandcamp_data_album = json_decode($bandcamp_data_page,true);
+	$data = $bandcamp->fetch(['endpoint'=>'embed','id'=>$code]);
+
+	if (!empty($data['error']) ) {
+		echo wp_kses($bandcamp->render_error_html($data), 'post');
+		return;
+	}
+
+	if (empty($data)) :
+		echo wp_kses($bandcamp->render_error_html([
+			'error'=>true,
+			'message'=>__('BANDCAMP URL IS NOT VALID','blocks-for-bandcamp')
+		]), 'post');
+		return;
+	endif;
+
+	if ($is_editor && $data['cached'] == true) {
+		echo '<span style="position:absolute;z-index:99;top:10px;right:10px;background:#1da0c3;color:#fff;font-size:10px;padding:3px 10px;border-radius:20px;display:inline-block;">CACHE</span>';
+	}
 
 	$output = '
-	<iframe style="border:0;width:100%;max-width:700px;height:120px;margin:0px;" src="https://bandcamp.com/EmbeddedPlayer/album='.esc_attr($bandcamp_data_album['item_id']).'/size=large/bgcol=ffffff/linkcol=111111/tracklist=false/artwork=small/transparent=true/" seamless>
+	<iframe style="border:0;width:100%;max-width:700px;height:120px;margin:0px;" src="https://bandcamp.com/EmbeddedPlayer/album='.esc_attr($data['item_id']).'/size=large/bgcol=ffffff/linkcol=111111/tracklist=false/artwork=small/transparent=true/" seamless>
 		<a href="'.esc_url($code).'">'.esc_html__( 'Listen on Bandcamp', 'blocks-for-bandcamp' ).'</a>
 	</iframe>';
 
@@ -69,12 +68,6 @@ endif;
 
 <div <?php echo wp_kses_post(!$is_editor ? $wrapper_attributes : 'style="text-align:'.esc_attr($textAlign).'"'); ?>>
 	<div id="<?php echo esc_attr($blockID); ?>" class="bandcamp-embed">
-		<?php
-		if ($embedType == 'iframe' || $embedType == 'url') : 
-			echo wp_kses( $output, $allowed_tags ); 
-		else : 
-			echo wp_kses_post($output); 
-		endif; 
-		?>
+		<?php echo wp_kses( $output, 'post'); ?>
 	</div>
 </div>

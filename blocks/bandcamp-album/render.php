@@ -50,42 +50,42 @@ $css = "
 	echo '<style>' . wp_kses( $css, [] ) . '</style>';
 //}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+$bandcamp = new BlocksForBandcamp_API();
 
 if (!$url || !$albumID) : 
 
-	echo '
-	<div class="bandcamp-block-message">
-		<svg version="1.1" style="max-width:100px" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24" xml:space="preserve">
-			<path d="M10.1,8.9l-3.3,6h7l3.3-6H10.1z M21.6,11.9c0-5.3-4.3-9.6-9.6-9.6s-9.6,4.3-9.6,9.6s4.3,9.6,9.6,9.6 	S21.6,17.2,21.6,11.9z M12,20.9c-5,0-9-4-9-9s4-9,9-9s9,4,9,9S17,20.9,12,20.9z"/>
-		</svg>
-		<span>'. esc_html__('BANDCAMP ALBUM ID REQUIRED','blocks-for-bandcamp') .'</span>
-	</div>';
+	echo wp_kses($bandcamp->render_notice_html([
+		'error'=>true,
+		'message'=>__('BANDCAMP ALBUM ID REQUIRED','blocks-for-bandcamp')
+	]), 'post');
 	return;
 
 endif;
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// GET BANDCAMP DATA
+$args = [
+	'endpoint' => 'album',
+	'id' => $albumID
+];
 
-// GET BANDCAMP ALBUM DATA VIA ID
-$bandcamp_album = gf_blocks_for_bandcamp__get_bandcamp_album_data($albumID);
+$data = $bandcamp->fetch($args);
 
-if (!$bandcamp_album) :
-	
-	echo '
-	<div class="bandcamp-block-message bandcamp-block-error">
-		<svg version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24" xml:space="preserve">
-			<path d="M10.1,8.9l-3.3,6h7l3.3-6H10.1z M21.6,11.9c0-5.3-4.3-9.6-9.6-9.6s-9.6,4.3-9.6,9.6s4.3,9.6,9.6,9.6 	S21.6,17.2,21.6,11.9z M12,20.9c-5,0-9-4-9-9s4-9,9-9s9,4,9,9S17,20.9,12,20.9z"/>
-		</svg>
-		<span>'. esc_html__('BANDCAMP URL IS NOT VALID','blocks-for-bandcamp') .'</span>
-	</div>';
+if (!empty($data['error']) ) {
+	echo wp_kses($bandcamp->render_error_html($data), 'post');
 	return;
+}
 
-else :
-
-	$data = gf_blocks_for_bandcamp__parse_bandcamp_album_data($bandcamp_album);
-
+if (empty($data)) :
+	echo wp_kses($bandcamp->render_error_html([
+		'error'=>true,
+		'message'=>__('BANDCAMP URL IS NOT VALID','blocks-for-bandcamp')
+	]), 'post');
+	return;
 endif;
 
+if ($is_editor && $data['cached'] == true) {
+	echo '<span style="position:absolute;z-index:99;top:10px;right:10px;background:#1da0c3;color:#fff;font-size:10px;padding:3px 10px;border-radius:20px;display:inline-block;">CACHE</span>';
+}
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////?>
  
  
@@ -128,7 +128,7 @@ endif;
 			<?php if ($display_audio && $embedType == 'custom') : ?>
 			<div class="bandcamp-album-audio">
 				<audio preload="auto" tabindex="0" controls="" type="audio/mpeg">
-					<source type="audio/mp3" src="<?php echo esc_url($data['featured_track_mp3'] ?? $data['tracks'][0]['mp3']); ?>">
+					<source type="audio/mp3" src="<?php echo esc_url($data['featured_track_mp3'] ?? ''); ?>">
 					<?php echo esc_html__('Sorry, your browser does not support HTML5 audio.','blocks-for-bandcamp'); ?>
 				</audio>
 			</div>
@@ -165,13 +165,12 @@ endif;
 		</div>
 		<?php endif; ?>
 
-
 		<?php if (!empty($data['packages']) && $display_merch) : ?>
 		<div class="bandcamp-album-merch">
 			<ul>
 				<?php
 					$pI = 0;
-					foreach ($data['packages'] as $package) {
+					foreach ($data['packages'] as $package) { 
 						if ($package['album_id'] == $data['album_id']) :  ?>
 							
 							<li>

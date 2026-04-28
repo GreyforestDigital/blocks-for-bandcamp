@@ -5,4 +5,9 @@
 .bandcamp-block-message.bandcamp-block-error {border-color:red;color:red;}
 .bandcamp-block-message.bandcamp-block-error svg path {fill:red;}
 
+/* GLOBAL */
+.bandcamp-embed {position:relative;margin:0px auto;}
+.bandcamp-embed * {position:relative;padding:0;margin:0;box-sizing:border-box;}
+.is-root-container .bandcamp-embed {pointer-events:none;}
+
 .bandcamp-embed iframe {margin:0px;width:100%;}

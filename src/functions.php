@@ -44,7 +44,7 @@ function gf_blocks_for_bandcamp__meta_rest_route() {
                 }
 
                 // Cache result to avoid repeated fetches
-                $key     = 'blocks_for_bandcamp__meta_' . md5( $url . '|' . $name );
+                $key     = 'gf_blocks_for_bandcamp__meta_' . md5( $url . '|' . $name );
                 $cached  = get_transient( $key );
                 if ( $cached !== false ) {
                     return array(
@@ -54,9 +54,12 @@ function gf_blocks_for_bandcamp__meta_rest_route() {
                     );
                 }
 
-                // Meta tag parser
-                $bandcamp_page_data = gf_blocks_for_bandcamp__get_meta_tag_content( $url, $name );
-				$bandcamp_album_id = !empty($bandcamp_page_data) ? json_decode($bandcamp_page_data,true)['item_id'] : false;
+				// Meta tag parser
+				$bandcamp = new BlocksForBandcamp_API();
+                $bandcamp_page_data = $bandcamp->fetch_bandcamp_page( $url );
+                $bandcamp_meta_content = $bandcamp->get_meta_tag_content( $bandcamp_page_data, $name );
+
+				$bandcamp_album_id = !empty($bandcamp_meta_content) ? json_decode($bandcamp_meta_content,true)['item_id'] : false;
 
                 if ( $bandcamp_album_id === false ) {
                     return new WP_Error( 'no_meta', 'URL is not valid.', array( 'status' => 404 ) );
@@ -75,62 +78,6 @@ function gf_blocks_for_bandcamp__meta_rest_route() {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-/**
-* Gets HTML of Bandcamp album page by URL for retrieving album ID
-*
-* @param string $url url of page to parse
-* @return string value of album ID OR false if doesn't exist
-*/
-function gf_blocks_for_bandcamp__fetch_bandcamp_page( $url ) {
-	$args = array(
-		'headers' => array(
-			'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
-			'Referer'    => isset($_SERVER['HTTP_HOST']) ? sanitize_url(wp_unslash($_SERVER['HTTP_HOST'])) : home_url()
-		),
-		'timeout' => 10,
-	);
-
-	$response = wp_remote_get( $url, $args );
-
-	if ( is_wp_error( $response ) ) {
-		echo esc_html( 'Request Error: ' . $response->get_error_message() );
-		return false;
-	}
-
-	$html = wp_remote_retrieve_body( $response );
-
-	return $html;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-/**
-* Parses a url for meta tag by name
-*
-* @param string $url url of page to parse
-* @param string $meta_name name of meta tag for capturing
-* @return string value of meta field OR false if doesn't exist
-*/
-function gf_blocks_for_bandcamp__get_meta_tag_content( $url, $meta_name ) {
-
-	$html = gf_blocks_for_bandcamp__fetch_bandcamp_page($url);
-
-	if ( $html == false ) return false;
-
-	libxml_use_internal_errors(true);
-	$doc = new DOMDocument();
-	$doc->loadHTML($html);
-	$metas = $doc->getElementsByTagName('meta');
-
-	foreach ( $metas as $meta ) {
-		if ( $meta->getAttribute('name') === $meta_name ) {
-			return $meta->getAttribute('content');
-		}
-	}
-	return false;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
 add_shortcode('bandcamp', 'gf_blocks_for_bandcamp__register_bandcamp_shortcode');
 
 /**
@@ -235,134 +182,50 @@ function gf_blocks_for_bandcamp__get_contrast_color( $bg_color ) {
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
-* Get album data based on album ID
-*
-* @param string $album_id id of album from Bandcamp
-* @return array array of album data
+* Adds svg element tags to wp_kses() escaping
 */
-function gf_blocks_for_bandcamp__get_bandcamp_album_data($album_id){
+if (!function_exists('gf_blocks_for_bandcamp__kses_additions')) {
 
-	if (empty($album_id)) { return false; }
+	add_filter( 'wp_kses_allowed_html', 'gf_blocks_for_bandcamp__kses_additions', 10, 2 );
+	function gf_blocks_for_bandcamp__kses_additions( $tags, $context ) {
 
-	$response['status'] = false;
-	$response['message'] = '';
-	$response['data'] = [];
-
-	$url = 'https://bandcamp.com/EmbeddedPlayer/album='.$album_id;
-	$html = gf_blocks_for_bandcamp__fetch_bandcamp_page($url);
-
-	if (empty($html)) { 
-		$response['message'] = '❌ Could not fetch album page data.';
-		return $response;
-	}
-
-	// Step 1: Find the raw encoded data-player-data content
-	if (preg_match('/data-player-data="([^"]+)"/', $html, $matches)) {
-		// Step 2: Unescape HTML entities
-		$json_escaped = html_entity_decode($matches[1]);
-
-		// Step 3: Decode JSON
-		$json_decoded = json_decode($json_escaped, true);
-
-		if (json_last_error() === JSON_ERROR_NONE) {
-			$response['data'] = $json_decoded;
-			$response['status'] = true;
-			$response['message'] = "Tracks exist";
-		} else {
-			$response['message'] = "❌ JSON decode error: " . json_last_error_msg();
+		if ( $context !== 'post' ) {
+			return $tags;
 		}
-	} else {
-		$response['message'] = "❌ Could not find data-player-data attribute.";
+
+		$tags['svg'] = array(
+			'class'           => true,
+			'aria-hidden'     => true,
+			'aria-labelledby' => true,
+			'role'            => true,
+			'xmlns'           => true,
+			'width'           => true,
+			'height'          => true,
+			'viewbox'         => true,
+			'fill'            => true,
+		);
+
+		$tags['iframe'] = array(
+			'src'             => true,
+			'width'           => true,
+			'height'          => true,
+			'frameborder'     => true,
+			'allow'           => true,
+			'allowfullscreen' => true,
+			'loading'         => true,
+			'class'           => true,
+			'id'              => true,
+			'style'           => true,
+			'seamless'        => true,
+		);
+
+		$tags['path'] = array(
+			'd'    => true,
+			'fill' => true,
+		);
+
+		return $tags;
 	}
-
-	return $response;
-
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-/**
-* Parses bandcamp album data into formatted array for outputting on front-end
-*
-* @param array $album_data array of raw data from Bandcamp album
-* @param string $trackNumber chosen track number if desired
-* @return array array of formatted album data
-*/
-function gf_blocks_for_bandcamp__parse_bandcamp_album_data($bandcamp_album_data, $trackNumber = false)
-{
-	$data = [];
-
-	// ESTABLISH ALBUM DATA
-	$data['artist'] = $bandcamp_album_data['data']['artist'];
-	$data['band_url'] = $bandcamp_album_data['data']['band_url'];
-	$data['album_id'] = $bandcamp_album_data['data']['album_id'];
-	$data['album_title'] = $bandcamp_album_data['data']['album_title'];
-	$data['album_art_thumb'] = $bandcamp_album_data['data']['album_art']; // _7
-	$data['album_art_small'] = $bandcamp_album_data['data']['album_art_lg']; // _2
-	$data['album_art_medium'] = 'https://f4.bcbits.com/img/a'.$bandcamp_album_data['data']['album_art_id'].'_16.jpg';
-	$data['album_art_large'] = 'https://f4.bcbits.com/img/a'.$bandcamp_album_data['data']['album_art_id'].'_10.jpg';
-	$data['album_link'] = $bandcamp_album_data['data']['linkback'];
-	$data['album_release_date'] = $bandcamp_album_data['data']['release_date'] ?? 20990101;
-	$data['publish_date'] = $bandcamp_album_data['data']['publish_date'];
-	$data['featured_track_id'] = $bandcamp_album_data['data']['featured_track_id'];
-
-	// LOOP THROUGH TRACKS
-	$t = 1;
-	foreach ($bandcamp_album_data['data']['tracks'] as $track) :
-		$data['tracks'][$t]['artist'] = $track['artist'];
-		$data['tracks'][$t]['title'] = $track['title'];
-		$data['tracks'][$t]['album_title'] = $track['album_title'] ?? '';
-		$data['tracks'][$t]['id'] = $track['id'];
-		$data['tracks'][$t]['duration'] = gmdate("i:s",(int)$track['duration']);
-		$data['tracks'][$t]['tracknum'] = $track['tracknum'] + 1;
-		$data['tracks'][$t]['link'] = $track['title_link'];
-		$data['tracks'][$t]['mp3'] = $track['file']['mp3-128'];	
-		if ($data['featured_track_id'] == $track['id']) :
-			$data['featured_track_mp3'] = $track['file']['mp3-128'];
-			$featuredTrackNumber = $data['tracks'][$t]['tracknum'];
-		endif;
-		$t++;
-	endforeach;
-
-	// GET FEATURED TRACK DATA
-	$data['featured_track_title'] = ($trackNumber == false || $trackNumber == 0) ? $data['tracks'][$featuredTrackNumber]['title'] : $data['tracks'][$trackNumber]['title'];
-	$data['featured_track_artist'] = ($trackNumber == false || $trackNumber == 0) ? $data['tracks'][$featuredTrackNumber]['artist'] : $data['tracks'][$trackNumber]['artist'];
-	$data['featured_track_mp3'] = ($trackNumber == false || $trackNumber == 0)  ? $data['tracks'][$featuredTrackNumber]['mp3'] : $data['tracks'][$trackNumber]['mp3'];
-	
-	// LOOP THROUGH PACKAGES
-	$p = 0;
-	foreach ($bandcamp_album_data['data']['packages'] as $package) :
-
-		$data['packages'][$p]['id'] = $package['id'];
-		$data['packages'][$p]['url'] = (strpos($package['url'], $data['band_url']) === 0) ? $package['url'] : $data['band_url'] . $package['url'];
-		$data['packages'][$p]['type'] = $package['type_name'];
-		$data['packages'][$p]['title'] = $package['title'];
-		$data['packages'][$p]['description'] = $package['description'];
-		$data['packages'][$p]['price'] = number_format($package['price'],'2','.',',');
-		$data['packages'][$p]['currency'] = $package['currency'];
-		$data['packages'][$p]['quantity_total'] = $package['quantity'] ?? 9999;
-		$data['packages'][$p]['quantity_available'] = $package['quantity_available'] ?? 0;
-		$data['packages'][$p]['edition_size'] = $package['edition_size'];
-		$data['packages'][$p]['album_id'] = $package['album_id'];
-		$data['packages'][$p]['album_title'] = $package['album_title'];
-		$data['packages'][$p]['album_artist'] = $package['album_artist'];
-		$data['packages'][$p]['album_release_date'] = $package['album_release_date'];
-
-		$ph = 0;
-		if (!empty($package['arts'])) :
-			foreach ($package['arts'] as $photo) :
-				$data['packages'][$p]['photos'][$ph]['thumb'] = 'https://f4.bcbits.com/img/'.str_pad($photo['image_id'],10,'0', STR_PAD_LEFT).'_7.jpg';
-				$data['packages'][$p]['photos'][$ph]['small'] = 'https://f4.bcbits.com/img/'.str_pad($photo['image_id'],10,'0', STR_PAD_LEFT).'_2.jpg';
-				$data['packages'][$p]['photos'][$ph]['medium'] = 'https://f4.bcbits.com/img/'.str_pad($photo['image_id'],10,'0', STR_PAD_LEFT).'_16.jpg';
-				$data['packages'][$p]['photos'][$ph]['large'] = 'https://f4.bcbits.com/img/'.str_pad($photo['image_id'],10,'0', STR_PAD_LEFT).'_10.jpg';
-				$ph++;
-			endforeach;
-		endif;
-
-	$p++;
-	endforeach;
-
-	return $data;
 
 }
 

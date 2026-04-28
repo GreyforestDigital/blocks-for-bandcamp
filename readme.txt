@@ -7,16 +7,16 @@ Donate link: https://www.greyforest.digital/donate
 Tags: bandcamp, band, embed, merch, album
 Requires at least: 6.0
 Tested up to: 6.9
-Stable tag: 1.1.0
+Stable tag: 1.2.0
 Requires PHP: 8.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Gutenberg blocks for Bandcamp with functions for embedding merchandise, featured albums, audio players, and customized download code redemption forms.
+Gutenberg blocks for Bandcamp with functions for embedding merchandise, discography, featured albums, audio players, and download code forms.
 
 == Description ==
 
-A collection of Gutenberg blocks for Bandcamp with functions for embedding merchandise, featured albums, audio players, and customized download code redemption forms.
+A collection of Gutenberg blocks for Bandcamp with functions for embedding merchandise, discography, featured albums, audio players, and download code forms.
 
 Blocks for Bandcamp is a 100% free WordPress plugin that bridges your Bandcamp presence with your WordPress site by providing a suite of Gutenberg blocks specifically made for Bandcamp artists, labels, and music promoters to direct fans to your site while still selling music and merch from Bandcamp. This plugin gives you easy drag and drop editor tools with tons of customization options to showcase your music, merchandise, and download code forms with full customization — no API keys, logging in, or technical setup required.
 
@@ -32,6 +32,13 @@ Does not require API connection or any login - works for any public Bandcamp acc
 * Merch footer section for displaying items connected to album
     * Product photos, format, title, description, price, quantity remaining, and more
 * Option to only display certain sections (header / playlist / merch)
+
+### DISCOGRAPHY
+* Display all releases from a Bandcamp account based on albums from /music page
+* Grid of releases with cover art, title, artist, and link button
+    * Options to toggle display of each element
+* Layout options for responsive grid Column Count (desktop + mobile)
+* Display options for release borders, padding, alignment, colors, and more
 
 ### EMBED
 * Custom options for embedding Bandcamp players (via shortcode, iFrame, or URL)
@@ -83,9 +90,33 @@ If you have questions, need help, or just want to share feedback, I recommend us
 
 For general inquiries, you can also reach out at [https://www.greyforest.digital/contact](https://www.greyforest.digital/contact).
 
+
+== Screenshots ==
+
+1. Display a grid or list layout of all merch items connected to a Bandcamp account
+2. Embed Bandcamp players via URL, shortcode, or iframe code
+3. Display a discography grid of all albums from a Bandcamp account listed on the /music page
+4. Display a featured album via URL with a hero header, audio player and playlist, and merchandise linked to album
+5. Embed a customizable minimalist audio player for a single featured track from album via URL
+6. Customize a form for digital download codes, where user enters code and is taken to Bandcamp for redeeming
+
+
 == Changelog ==
 
-= 1.1.0 -> January 15th, 2025 =
+= 1.2.0 -> April 25th, 2026 =
+* New: "Discography" block to display all releases from artist as grid
+* New: Caching via transients for all calls to Bandcamp == faster page loads
+* New: Settings page for viewing and clearing transients and logs
+* New: Logger for tracking all calls to Bandcamp for debugging
+* Rebuilt internal API system for optimized logic + better user error messages
+* SSRF hardening before wp_remote_get calls
+* Optimized fetch calls for meta tags == faster initial syncs for album data
+* CSS fix to prevent accidental external link clicks while in editor
+* CSS tweak to Merch "card" layout items for better font-size inheritance
+* Main product photo in Merch block links to product page if purchase buttons are hidden
+* wp_kses_allowed_html function for safely outputting SVG + iframe with escaping
+
+= 1.1.0 -> January 15th, 2026 =
 * Compatibility check for WordPress 6.9
 * Updated readme
 * Updated minimum PHP version to 8.0

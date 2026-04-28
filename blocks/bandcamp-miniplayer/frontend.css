@@ -5,6 +5,11 @@
 .bandcamp-block-message.bandcamp-block-error {border-color:red;color:red;}
 .bandcamp-block-message.bandcamp-block-error svg path {fill:red;}
 
+/* GLOBAL */
+.bandcamp-miniplayer {position:relative;margin:0px auto;}
+.bandcamp-miniplayer * {position:relative;padding:0;margin:0;box-sizing:border-box;}
+.is-root-container .bandcamp-miniplayer a {pointer-events:none;}
+
 .bandcamp-miniplayer {position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;aspect-ratio:7/3;}
 .bandcamp-miniplayer-play {cursor:pointer;position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;display:flex;align-items:center;justify-content:center;opacity:1;}
 .bandcamp-miniplayer-play svg {cursor:pointer;height:20%;max-height:250px;min-height:50px;width:auto;}

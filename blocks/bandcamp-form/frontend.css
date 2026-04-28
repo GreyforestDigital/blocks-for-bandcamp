@@ -5,6 +5,11 @@
 .bandcamp-block-message.bandcamp-block-error {border-color:red;color:red;}
 .bandcamp-block-message.bandcamp-block-error svg path {fill:red;}
 
+/* GLOBAL */
+.bandcamp-form {position:relative;margin:0px auto;}
+.bandcamp-form * {position:relative;padding:0;margin:0;box-sizing:border-box;}
+.is-root-container .bandcamp-form a {pointer-events:none;}
+
 .bandcamp-form form {display:flex;gap:10px;}
 .bandcamp-form-layout-stacked form {flex-flow:column wrap;}
 .bandcamp-form-layout-sidebyside form {display:grid;grid-template-columns:auto auto;}

@@ -25,10 +25,13 @@ var TextareaControl = wp.components.TextareaControl;
 var TextControl = wp.components.TextControl;
 var ToggleControl = wp.components.ToggleControl;
 var Toolbar = wp.components.Toolbar;
+var UnitControl = wp.components.__experimentalUnitControl || wp.components.UnitControl;
 var useBlockProps = wp.blockEditor.useBlockProps;
 var useSelect = wp.data.useSelect;
+var Spinner = wp.components.Spinner;
+var Notice = wp.components.Notice;
 
-var customIcon__bandcamp_embed = createElement(
+var customIcon__bandcamp_miniplayer = createElement(
 	'svg',
 	{ xmlns: 'http://www.w3.org/2000/svg', viewBox: '0 0 24 24' },
 	createElement('path', {
@@ -40,7 +43,7 @@ registerBlockType('blocks-for-bandcamp/bandcamp-miniplayer', {
  	icon: {
 		background: '#1da0c3', 
 		foreground: '#ffffff',
-		src: customIcon__bandcamp_embed
+		src: customIcon__bandcamp_miniplayer
 	},    
     edit: function (props) {
 
@@ -96,7 +99,9 @@ registerBlockType('blocks-for-bandcamp/bandcamp-miniplayer', {
 					readOnly: isReadonly,
 					onChange: function (value) {
 						return setAttributes({ url: value });
-					}
+					},
+					style: {wordBreak:'break-all'},
+					rows:3					
 				}),				
 				createElement('small',{},
 					'Enter album URL, then click "Fetch Album ID" to sync the album ID',
@@ -122,10 +127,11 @@ registerBlockType('blocks-for-bandcamp/bandcamp-miniplayer', {
 				createElement(TextControl, {
 					label: "Album ID",
 					value: attributes.albumID,
-					readOnly: isReadonly,
+					readOnly: true,
 					onChange: function (value) {
 						return setAttributes({ albumID: value });
-					}
+					},
+					style: {opacity:'0.5'}
 				}),
 
 				createElement(TextControl, {
