@@ -97,7 +97,7 @@ if (empty($data)) :
 	return;
 endif;
 
-if ($is_editor && $data['cached'] == true) {
+if ($is_editor && !empty($data['cached'])) {
 	echo '<span style="position:absolute;z-index:99;top:10px;right:10px;background:#1da0c3;color:#fff;font-size:10px;padding:3px 10px;border-radius:20px;display:inline-block;">CACHE</span>';
 }
 

@@ -83,9 +83,20 @@ if (empty($data)) :
 	return;
 endif;
 
-if ($is_editor && $data['cached'] == true) {
+if ($is_editor && !empty($data['cached'])) {
 	echo '<span style="position:absolute;z-index:99;top:10px;right:10px;background:#1da0c3;color:#fff;font-size:10px;padding:3px 10px;border-radius:20px;display:inline-block;">CACHE</span>';
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+foreach ($data['tracks'] as $track) :
+	if ($track['id'] == $data['featured_track_id']) :
+		$data['featured_track_mp3'] = $track['mp3'];
+		$data['featured_track_title'] = $track['title'];
+		$data['featured_track_artist'] = $track['artist'];
+	endif;
+endforeach;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////?>
  
  
@@ -154,9 +165,9 @@ if ($is_editor && $data['cached'] == true) {
 					} else {
 						echo '
 						<li>
-							<span>'.esc_html($track['tracknum']).'</span>
-							<span>'.wp_kses_post($track['artist']).' : '.wp_kses_post($track['title']).'</span>
-							<span></span>
+							<span class="track-number">'.esc_html($track['tracknum']).'</span>
+							<span class="track-link">'.wp_kses_post($track['artist']).' : '.wp_kses_post($track['title']).'</span>
+							<span class="track-duration"></span>
 						</li>';
 					}		
 				}

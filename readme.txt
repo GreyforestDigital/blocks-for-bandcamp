@@ -6,8 +6,8 @@ Contributors: GreyforestDigital
 Donate link: https://www.greyforest.digital/donate
 Tags: bandcamp, band, embed, merch, album
 Requires at least: 6.0
-Tested up to: 6.9
-Stable tag: 1.2.0
+Tested up to: 7.0
+Stable tag: 1.2.3
 Requires PHP: 8.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -90,18 +90,21 @@ If you have questions, need help, or just want to share feedback, I recommend us
 
 For general inquiries, you can also reach out at [https://www.greyforest.digital/contact](https://www.greyforest.digital/contact).
 
-
-== Screenshots ==
-
-1. Display a grid or list layout of all merch items connected to a Bandcamp account
-2. Embed Bandcamp players via URL, shortcode, or iframe code
-3. Display a discography grid of all albums from a Bandcamp account listed on the /music page
-4. Display a featured album via URL with a hero header, audio player and playlist, and merchandise linked to album
-5. Embed a customizable minimalist audio player for a single featured track from album via URL
-6. Customize a form for digital download codes, where user enters code and is taken to Bandcamp for redeeming
-
-
 == Changelog ==
+
+= 1.2.3 -> July 8th, 2026 =
+* Implemented strict UTF-8 encoding for non-Latin characters in names and titles
+
+= 1.2.2 -> June 9th, 2026 =
+* Fixed styling in custom HTML5 audio player for tracks that don't have an MP3
+* Resolved error log message for json_decode when API data array is empty
+* Resolved error log message from unset key used to display tag for cached blocks upon first load in editor
+
+= 1.2.1 -> June 1st, 2026 =
+* Compatibility check for WordPress 7.0
+* Fixed custom HTML5 audio player in "Album" block not setting featured track mp3 on load
+* Updated URL embed type for "Embed" block to work with single tracks in addition to albums
+* Added log entry if embed data sync is unsuccessful
 
 = 1.2.0 -> April 25th, 2026 =
 * New: "Discography" block to display all releases from artist as grid

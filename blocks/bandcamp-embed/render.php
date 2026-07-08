@@ -46,12 +46,18 @@ if ($embedType == 'url') :
 		return;
 	endif;
 
-	if ($is_editor && $data['cached'] == true) {
+	if ($is_editor && !empty($data['cached'])) {
 		echo '<span style="position:absolute;z-index:99;top:10px;right:10px;background:#1da0c3;color:#fff;font-size:10px;padding:3px 10px;border-radius:20px;display:inline-block;">CACHE</span>';
+	}
+	
+	if (!empty($data['item_type']) && $data['item_type'] == 't') {
+		$data['item_type'] = 'track';
+	} else {
+		$data['item_type'] = 'album';
 	}
 
 	$output = '
-	<iframe style="border:0;width:100%;max-width:700px;height:120px;margin:0px;" src="https://bandcamp.com/EmbeddedPlayer/album='.esc_attr($data['item_id']).'/size=large/bgcol=ffffff/linkcol=111111/tracklist=false/artwork=small/transparent=true/" seamless>
+	<iframe style="border:0;width:100%;max-width:700px;height:120px;margin:0px;" src="https://bandcamp.com/EmbeddedPlayer/'.esc_attr($data['item_type']).'='.esc_attr($data['item_id']).'/size=large/bgcol=ffffff/linkcol=111111/tracklist=false/artwork=small/transparent=true/" seamless>
 		<a href="'.esc_url($code).'">'.esc_html__( 'Listen on Bandcamp', 'blocks-for-bandcamp' ).'</a>
 	</iframe>';
 

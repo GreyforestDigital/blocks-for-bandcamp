@@ -52,7 +52,9 @@ class BlocksforBandcamp_API {
 			$data = $this->get_bandcamp_discography_data($args['id']);
 		} elseif ($args['endpoint'] == 'embed') {
 			$data = $this->get_meta_tag_content('','bc-page-properties',$args['id']);
-			$data = json_decode($data,true);
+			if (!empty($data)) {
+				$data = json_decode($data,true);
+			}
 		}
 		
 		// 3. Return error message if failed
@@ -72,6 +74,7 @@ class BlocksforBandcamp_API {
 	/**
 	* Gets HTML of Bandcamp page by URL
 	*
+	* @since 1.0.0
 	* @param string $url url of page to parse
 	* @return string full html content of page
 	*/
@@ -118,6 +121,7 @@ class BlocksforBandcamp_API {
 	/**
 	* Parses a url for meta tag by name
 	*
+	* @since 1.2.0
 	* @param string $html fetched html content of page to parse
 	* @param string $meta_name name of meta tag for capturing
 	* @return string value of meta field OR false if doesn't exist
@@ -128,6 +132,7 @@ class BlocksforBandcamp_API {
 		if (!empty($url)) {
 			$html = $this->fetch_bandcamp_page($url);
 			if (isset($html['error'])) {
+				$this->logger->log('error', 'Embed data sync unsuccessful', 'Error: '.$html['message'] );
 				return;
 			}
 			$this->logger->log('info', 'Embed data sync successful', 'ID: '.$url );
@@ -137,7 +142,8 @@ class BlocksforBandcamp_API {
 
 		libxml_use_internal_errors(true);
 		$doc = new DOMDocument();
-		$doc->loadHTML($html);
+		$doc->loadHTML('<?xml encoding="UTF-8">' . $html);
+		$doc->encoding = 'UTF-8';
 		$metas = $doc->getElementsByTagName('meta');
 
 		foreach ( $metas as $meta ) {
@@ -178,7 +184,7 @@ class BlocksforBandcamp_API {
 		// Step 1: Find the raw encoded data-player-data content
 		if (preg_match('/data-player-data="([^"]+)"/', $html, $matches)) {
 			// Step 2: Unescape HTML entities
-			$json_escaped = html_entity_decode($matches[1]);
+			$json_escaped = html_entity_decode($matches[1], ENT_QUOTES | ENT_HTML5, 'UTF-8');
 
 			// Step 3: Decode JSON
 			$json_decoded = json_decode($json_escaped, true);
@@ -286,6 +292,7 @@ class BlocksforBandcamp_API {
 	/**
 	* Get all albums from an account's music page
 	*
+	* @since 1.2.0
 	* @param string $artist_url subdomain / url of artist/account from Bandcamp
 	* @return array array of releases data
 	*/
@@ -325,7 +332,8 @@ class BlocksforBandcamp_API {
 		// Init libxml + DOM parsing
 		libxml_use_internal_errors( true );
 		$dom = new DOMDocument();
-		$dom->loadHTML( $html );
+		$dom->loadHTML( '<?xml encoding="UTF-8">' . $html );
+		$dom->encoding = 'UTF-8';
 		$xpath = new DOMXPath( $dom );
 
 		// Variables for later use
