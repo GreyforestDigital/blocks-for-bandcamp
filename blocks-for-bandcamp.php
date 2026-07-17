@@ -5,7 +5,7 @@ Plugin URI: https://www.greyforest.digital/plugins/blocks-for-bandcamp
 Description: Gutenberg blocks for Bandcamp with functions for embedding merchandise, discography, featured albums, audio players, and download code forms.
 Author: Greyforest
 Author URI: https://www.greyforest.digital
-Version: 1.2.3
+Version: 1.3.0
 Requires at least: 6.0
 Requires PHP: 8.0
 Tested up to: 7.0
@@ -20,7 +20,7 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 if (!defined('ABSPATH')) { return; }
 
-define('GF_BLOCKS_FOR_BANDCAMP_PLUGIN_VERSION','1.2.3');
+define('GF_BLOCKS_FOR_BANDCAMP_PLUGIN_VERSION','1.3.0');
 define('GF_BLOCKS_FOR_BANDCAMP_PLUGIN_URL',plugin_dir_url( __FILE__ ));
 define('GF_BLOCKS_FOR_BANDCAMP_PLUGIN_PATH',dirname( __FILE__ ));
 define('GF_BLOCKS_FOR_BANDCAMP_PLUGIN_BASENAME',plugin_basename(__FILE__));

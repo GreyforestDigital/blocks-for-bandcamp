@@ -7,7 +7,7 @@ Donate link: https://www.greyforest.digital/donate
 Tags: bandcamp, band, embed, merch, album
 Requires at least: 6.0
 Tested up to: 7.0
-Stable tag: 1.2.3
+Stable tag: 1.3.0
 Requires PHP: 8.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -91,6 +91,11 @@ If you have questions, need help, or just want to share feedback, I recommend us
 For general inquiries, you can also reach out at [https://www.greyforest.digital/contact](https://www.greyforest.digital/contact).
 
 == Changelog ==
+
+= 1.3.0 -> July 13th, 2026 =
+* New: Custom HTML5 audio player interface for "Album" block with color options
+* New: Accessibility improvements for all blocks (aria tags, semantic elements, etc)
+* "Miniplayer" progress bar now allows time seeking throughout track
 
 = 1.2.3 -> July 8th, 2026 =
 * Implemented strict UTF-8 encoding for non-Latin characters in names and titles

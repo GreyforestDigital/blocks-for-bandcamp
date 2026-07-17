@@ -11,6 +11,7 @@
 .is-root-container .bandcamp-form a {pointer-events:none;}
 
 .bandcamp-form form {display:flex;gap:10px;}
+.bandcamp-form form label {visibility:hidden;height:0;overflow:hidden;padding:0;color:transparent;}
 .bandcamp-form-layout-stacked form {flex-flow:column wrap;}
 .bandcamp-form-layout-sidebyside form {display:grid;grid-template-columns:auto auto;}
 .bandcamp-form-layout-sidebyside form input,

@@ -211,7 +211,28 @@ registerBlockType('blocks-for-bandcamp/bandcamp-album', {
 						setAttributes({ buttonColor: val });
 					},
 					disableAlpha: false
+				}),
+
+
+				attributes.embedType == 'custom' && createElement( 'label', { className: 'bandcamp-label' }, 'Progress Bar Color' ),
+				attributes.embedType == 'custom' && createElement(ColorPalette, {
+					value: attributes.progressBarColor,
+					onChange: function (val) {
+						setAttributes({ progressBarColor: val });
+					},
+					disableAlpha: false
+				}),
+				attributes.embedType == 'custom' && createElement( 'label', { className: 'bandcamp-label' }, 'Player Controls Color' ),
+				attributes.embedType == 'custom' && createElement(ColorPalette, {
+					value: attributes.playerControlsColor,
+					onChange: function (val) {
+						setAttributes({ playerControlsColor: val });
+					},
+					disableAlpha: false
 				})
+
+
+
 			)
 		);
 

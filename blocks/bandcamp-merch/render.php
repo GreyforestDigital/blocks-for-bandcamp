@@ -115,7 +115,7 @@ if ($is_editor && !empty($data['cached'])) {
 									<h3><?php echo esc_html($package['album_title'] ?? $package['title']); ?></h3>
 									<?php endif; ?>
 
-									<?php if ($display_album_artist) : ?>
+									<?php if ($display_album_artist && !empty($package['album_artist'])) : ?>
 									<h4><?php echo esc_html($package['album_artist']); ?></h4>
 									<?php endif; ?>
 

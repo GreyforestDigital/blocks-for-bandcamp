@@ -28,6 +28,8 @@
 		"textColor": { "type": "string", "default": "#ffffff" },
 		"buttonColor": { "type": "string", "default": "#000000" },
 		"trackColor": { "type": "string", "default": "#ffffff" },
+		"playerControlsColor": { "type": "string", "default": "#ffffff" },
+		"progressBarColor": { "type": "string", "default": "#ffffff" },
 		"embedType": { "type": "string", "default": "custom" },
 		"display_album_art": { "type": "boolean", "default": true },
 		"display_album_artist": { "type": "boolean", "default": true },

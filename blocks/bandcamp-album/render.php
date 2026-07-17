@@ -18,6 +18,8 @@ $display_audio = $attributes['display_audio'] ?? true;
 $display_merch = $attributes['display_merch'] ?? true;
 $display_playlist = $attributes['display_playlist'] ?? true;
 $embedType = $attributes['embedType'] ?? 'custom';
+$playerControlsColor = $attributes['playerControlsColor'] ?? '#ffffff';
+$progressBarColor = $attributes['progressBarColor'] ?? '#ffffff';
 $textColor = $attributes['textColor'] ?? '#ffffff';
 $trackColor = $attributes['trackColor'] ?? '#ffffff';
 $url =  $attributes['url'] ?? false;
@@ -28,6 +30,8 @@ $wrapper_attributes = get_block_wrapper_attributes([
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 $buttonTextColor = gf_blocks_for_bandcamp__get_contrast_color( $buttonColor );
 $blockID = sanitize_html_class( $blockID );
+
+$css_width_progress_bar = $is_editor ? '50%' : '0';
 
 $css = "
 #{$blockID}.bandcamp-album {background-color:" . ( sanitize_hex_color( $backgroundColor ) ?: 'transparent' ) . ";}
@@ -41,6 +45,10 @@ $css = "
 #{$blockID}.bandcamp-album a.album-link {background-color:" . ( sanitize_hex_color( $buttonColor ) ?: 'transparent' ) . ";color:" . ( sanitize_hex_color( $buttonTextColor ) ?: 'inherit' ) . " !important;}
 #{$blockID}.bandcamp-album a.album-link div {color:" . ( sanitize_hex_color( $buttonTextColor ) ?: 'inherit' ) . " !important;}
 #{$blockID}.bandcamp-album a.album-link path {fill:" . ( sanitize_hex_color( $buttonTextColor ) ?: 'inherit' ) . ";}
+#{$blockID}.bandcamp-album .bandcamp-player-time {color:" . ( sanitize_hex_color( $textColor ) ?: 'inherit' ) . "}
+#{$blockID}.bandcamp-album .bandcamp-player-play svg path {fill:" . ( sanitize_hex_color( $playerControlsColor ) ?: 'currentColor' ) . " !important;}
+#{$blockID}.bandcamp-album .bandcamp-player-progress {background:" . ( sanitize_hex_color( $progressBarColor ) ?: 'transparent' ) . ";width:" . esc_attr( $css_width_progress_bar ) . ";}
+#{$blockID}.bandcamp-album .bandcamp-player-progress-wrap {background:rgba(255,255,255,0.2);transition:.3s ease;}
 ";
 
 // Frontend
@@ -137,11 +145,22 @@ endforeach;
 			</div>
 
 			<?php if ($display_audio && $embedType == 'custom') : ?>
-			<div class="bandcamp-album-audio">
-				<audio preload="auto" tabindex="0" controls="" type="audio/mpeg">
+			<div class="bandcamp-album-audio bandcamp-player">
+				<audio id="<?php echo esc_attr( $blockID . '-audio' ); ?>" preload="auto" tabindex="0" controls="" type="audio/mpeg" style="display:none">
 					<source type="audio/mp3" src="<?php echo esc_url($data['featured_track_mp3'] ?? ''); ?>">
 					<?php echo esc_html__('Sorry, your browser does not support HTML5 audio.','blocks-for-bandcamp'); ?>
 				</audio>
+				<button type="button" class="bandcamp-player-play" aria-label="<?php echo esc_attr__( 'Play Track', 'blocks-for-bandcamp' ); ?>" aria-controls="<?php echo esc_attr( $blockID . '-audio' ); ?>" data-play-label="<?php echo esc_attr__( 'Play Track', 'blocks-for-bandcamp' ); ?>" data-pause-label="<?php echo esc_attr__( 'Pause Track', 'blocks-for-bandcamp' ); ?>" aria-pressed="false">
+					<svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 100 100" xml:space="preserve">
+						<path class="play" d="M 25,15 L 85,50 L 25,85 Z" />
+						<path class="pause" style="display:none" d="M 20,20 H 40 V 80 H 20 Z M 60,20 H 80 V 80 H 60 Z" />
+					</svg>
+				</button>
+				<div class="bandcamp-player-progress-wrap" role="slider" tabindex="0" aria-label="<?php echo esc_attr__( 'Seek audio', 'blocks-for-bandcamp' ); ?>" aria-controls="<?php echo esc_attr( $blockID . '-audio' ); ?>" aria-orientation="horizontal" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-valuetext="<?php echo esc_attr__( '00:00 / 00:00', 'blocks-for-bandcamp' ); ?>">
+					<div class="bandcamp-player-progress-buffer"></div>
+					<div class="bandcamp-player-progress"></div>
+				</div>
+				<div class="bandcamp-player-time" aria-live="off">00:00 / 00:00</div>
 			</div>
 			<?php endif; ?>
 
@@ -156,17 +175,23 @@ endforeach;
 				foreach ($data['tracks'] as $track) {
 					if (isset($track['mp3'])) {
 						$active = $track['id'] == $data['featured_track_id'] ? 'active' : '';
+						$track_label = sprintf(
+							/* translators: 1: track title, 2: track artist */
+							esc_attr__( 'Play %1$s by %2$s', 'blocks-for-bandcamp' ),
+							$track['title'],
+							$track['artist']
+						);
 						echo '
 						<li class="'.esc_attr($active).'">
 							<span class="track-number">'.esc_html($track['tracknum']).'</span>
-							<span class="track-link" data-track="'.esc_url($track['mp3']).'">'.wp_kses_post($track['artist']).' : '.wp_kses_post($track['title']).'</span>
+							<button type="button" class="track-link" data-track="'.esc_url($track['mp3']).'" aria-label="'.esc_attr( $track_label ).'" aria-current="'.esc_attr( $active === 'active' ? 'true' : 'false' ).'">'.wp_kses_post($track['artist']).' : '.wp_kses_post($track['title']).'</button>
 							<span class="track-duration">'.esc_html($track['duration']).'</span>
 						</li>';
 					} else {
 						echo '
 						<li>
 							<span class="track-number">'.esc_html($track['tracknum']).'</span>
-							<span class="track-link">'.wp_kses_post($track['artist']).' : '.wp_kses_post($track['title']).'</span>
+							<button type="button" class="track-link" aria-label="'.esc_attr( sprintf( esc_attr__( 'Track %1$s by %2$s is not available', 'blocks-for-bandcamp' ), $track['title'], $track['artist'] ) ).'" disabled>'.wp_kses_post($track['artist']).' : '.wp_kses_post($track['title']).'</button>
 							<span class="track-duration"></span>
 						</li>';
 					}		

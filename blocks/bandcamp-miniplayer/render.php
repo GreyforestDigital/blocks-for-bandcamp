@@ -106,22 +106,22 @@ endforeach;
 	<?php if ($data) : ?>
 
 	<section id="<?php echo esc_attr($blockID); ?>" class="bandcamp-miniplayer">
-		<div class="bandcamp-miniplayer-play">
-			<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 800 800" style="enable-background:new 0 0 800 800;" xml:space="preserve">
+		<audio id="<?php echo esc_attr( $blockID . '-audio' ); ?>" preload="auto" tabindex="0" controls="" type="audio/mpeg" style="display:none">
+			<source type="audio/mp3" src="<?php echo esc_url($data['featured_track_mp3']); ?>">
+			<?php echo esc_html__('Sorry, your browser does not support HTML5 audio.','blocks-for-bandcamp'); ?>
+		</audio>
+		<button type="button" class="bandcamp-miniplayer-play" aria-label="<?php echo esc_attr__( 'Play Track', 'blocks-for-bandcamp' ); ?>" aria-controls="<?php echo esc_attr( $blockID . '-audio' ); ?>" data-play-label="<?php echo esc_attr__( 'Play Track', 'blocks-for-bandcamp' ); ?>" data-pause-label="<?php echo esc_attr__( 'Pause Track', 'blocks-for-bandcamp' ); ?>" aria-pressed="false">
+			<svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 800 800" style="enable-background:new 0 0 800 800;" xml:space="preserve">
 				<path class="play" d="M553.4,386.6L342.3,242.2c-6.6-4.8-24.1-4.8-25.5,13.4v288.8c1.6,18.3,19.4,18.6,25.5,13.4l211.1-144.4 	C558.9,410.2,566.4,396.7,553.4,386.6L553.4,386.6z M349.5,513.6V286.4L515.3,400L349.5,513.6z"/>
 				<path class="pause" style="display:none" d="M363.3,560.9h-37.6c-14.9,0-27-12.1-27-27V265c0-14.9,12.1-27,27-27h37.6c14.9,0,27,12.1,27,27v268.9 	C390.3,548.8,378.2,560.9,363.3,560.9z M328.7,530.9h31.6V268h-31.6V530.9z M474.3,560.9h-37.6c-14.9,0-27-12.1-27-27V265 	c0-14.9,12.1-27,27-27h37.6c14.9,0,27,12.1,27,27v268.9C501.3,548.8,489.2,560.9,474.3,560.9z M439.7,530.9h31.6V268h-31.6V530.9z" 	/>
 				<path class="circle" d="M400,17.2C188.9,17.2,17.2,188.9,17.2,400S188.9,782.8,400,782.8S782.8,611.1,782.8,400S611.1,17.2,400,17.2z 	 M400,750.2c-193.1,0-350.2-157-350.2-350.2S206.9,49.8,400,49.8s350.2,157,350.2,350.2S593.1,750.2,400,750.2z"/>
 			</svg>
-		</div>
+		</button>
 		<div class="bandcamp-miniplayer-text">
 			<?php echo $attributes['display_track_title'] ? '<h3><i>'.wp_kses_post($data['featured_track_title']).'</i></h3>' : ''; ?>
 			<?php echo $attributes['display_album_artist'] ? '<h4>'.wp_kses_post($data['featured_track_artist']).'</h4>' : ''; ?>
 			<?php echo $attributes['display_album_title'] ? '<p>from <i>"'.wp_kses_post($data['album_title']).'"</i></p>' : ''; ?>
 		</div>
-		<audio preload="auto" tabindex="0" controls="" type="audio/mpeg" style="display:none">
-			<source type="audio/mp3" src="<?php echo esc_url($data['featured_track_mp3']); ?>">
-			<?php echo esc_html__('Sorry, your browser does not support HTML5 audio.','blocks-for-bandcamp'); ?>
-		</audio>		
 		<div class="bandcamp-miniplayer-art" style="background-image:url(<?php echo esc_url($data['album_art_medium']); ?>);"></div>
 		<div class="bandcamp-miniplayer-albumlink">
 			<?php if ($display_album_link) : ?>
@@ -135,7 +135,10 @@ endforeach;
 			</a>
 			<?php endif; ?>
 		</div>
-		<div class="bandcamp-miniplayer-progress"></div>
+		<div class="bandcamp-miniplayer-progress-wrap" role="slider" tabindex="0" aria-label="<?php echo esc_attr__( 'Seek audio', 'blocks-for-bandcamp' ); ?>" aria-controls="<?php echo esc_attr( $blockID . '-audio' ); ?>" aria-orientation="horizontal" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-valuetext="<?php echo esc_attr__( '00:00 / 00:00', 'blocks-for-bandcamp' ); ?>">
+			<div class="bandcamp-miniplayer-progress-buffer"></div>
+			<div class="bandcamp-miniplayer-progress"></div>
+		</div>
 	</section>
 
 	<?php endif; ?>

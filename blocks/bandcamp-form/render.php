@@ -123,7 +123,8 @@ $css = "
 <div <?php echo wp_kses_post(!$is_editor ? $wrapper_attributes : 'id="'.$anchor.'"'); ?>>
     <div id="<?php echo esc_attr($blockID); ?>" class="bandcamp-form bandcamp-form-layout-<?php echo esc_attr( $layout_style ); ?>">
         <form action="https://www.bandcamp.com/yum?" method="get">
-            <input type="text" name="code" placeholder="<?php echo esc_attr( $input_placeholder_text ); ?>" />
+			<label for="<?php echo esc_attr($blockID); ?>-bandcamp-code">Download Code</label>
+            <input id="<?php echo esc_attr($blockID); ?>-bandcamp-code" type="text" name="code" placeholder="<?php echo esc_attr( $input_placeholder_text ); ?>" />
             <button <?php echo esc_attr($is_editor ? 'disabled' : ''); ?> class="wp-element-button" type="submit">
                 <?php echo esc_html( $button_text ); ?>
             </button>
