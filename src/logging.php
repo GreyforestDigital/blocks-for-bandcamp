@@ -111,15 +111,15 @@ class BlocksForBandcamp_Logging {
 	 */
 	public function handle_clear_log() {
 
-		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( 'Unauthorized user' );
-		}
-
 		if (
 			isset( $_POST['gf_clear_logs'] ) &&
 			$_POST['gf_clear_logs'] == $this->plugin_slug &&
 			check_admin_referer( 'gf_clear_logs_action', 'gf_clear_logs_nonce' )
 		) {
+
+			if ( ! current_user_can( 'manage_options' ) ) {
+				wp_die( 'Unauthorized user' );
+			}
 			$clear = $this->clear_log();
 			if ( $clear ) {
 				$this->message = 'Plugin log successfully cleared.';
@@ -129,6 +129,7 @@ class BlocksForBandcamp_Logging {
 				$this->args    = [ 'type' => 'error', 'dismissible' => true ];
 			}
 			$this->display_admin_notices();
+			
 		}
 	}
 
